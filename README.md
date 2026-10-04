@@ -69,6 +69,8 @@ More detail in [docs/architecture.md](docs/architecture.md).
 | ![Prospects](docs/screenshots/prospects.png) | ![Customers](docs/screenshots/customers.png) |
 | Prospects to contact, tracked from suggested to won | Weekly customer health: winning, at risk, not yet paying |
 
+<img src="docs/screenshots/claudia.png" alt="Claudia's 3D avatar in the live HQ, standing by" width="300" align="right">
+
 **Claudia has a voice.** Press the orb or say the wake word and ask "what should I do first?" or "open prospects". She answers out loud as a lip-synced 3D avatar (TalkingHead). Neural voices report word timings, which keeps the lip-sync exact, and an offline voice is the fallback. She can only *suggest* actions. The API drops any action that is not on its allowlist, and the page asks you to confirm before anything runs.
 
 **Security.** The dashboard can change a live system, so it is guarded:
