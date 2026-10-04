@@ -1,0 +1,5 @@
+# Projects Code Health audits every week. One path per line; active work first.
+projects:
+  - ~/code/fernway-app
+  - ~/code/fernway-site
+  - ~/code/ai-employees

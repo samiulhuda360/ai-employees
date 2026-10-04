@@ -1,0 +1,25 @@
+{
+  "windowDays": 30,
+  "accounts": [
+    {
+      "account": "Harbour Dental", "email": "owner@harbourdental.example", "since": "2026-03-02", "lastSeen": "2026-10-01",
+      "credits": 140, "purchases": {"count": 7, "last": "2026-09-14", "totalUsd": 413},
+      "rankTracking": [{"business": "Harbour Dental", "keyword": "dentist near me", "scans": 6,
+                        "first": {"date": "2026-06-03", "avgRank": 9.2}, "latest": {"date": "2026-09-30", "avgRank": 4.1},
+                        "rankGainSinceFirst": 5.1, "rankGainSincePrevious": 0.8}],
+      "audits": [{"business": "Harbour Dental", "previousScore": 61, "previousDate": "2026-08-01", "latestScore": 74, "latestDate": "2026-09-28"}],
+      "campaigns": [{"name": "Review requests", "status": "RUNNING", "progress": "41/60"}]
+    },
+    {
+      "account": "Kowhai Plumbing", "email": "jobs@kowhaiplumbing.example", "since": "2026-05-20", "lastSeen": "2026-09-02",
+      "credits": 0, "purchases": {"count": 2, "last": "2026-06-10", "totalUsd": 98},
+      "autoReload": {"failures": 2, "lastFailureCode": "card_declined"},
+      "rankTracking": [], "audits": [],
+      "campaigns": [{"name": "Spring reviews", "status": "PAUSED_NO_CREDITS", "progress": "12/40"}]
+    },
+    {
+      "account": "Tui Hair Studio", "email": "hello@tuihair.example", "since": "2026-09-21", "lastSeen": "2026-09-23",
+      "credits": 20, "purchases": {"count": 0}, "rankTracking": [], "audits": [], "campaigns": []
+    }
+  ]
+}

@@ -1,0 +1,361 @@
+# YouTube Watcher - channel watchlist
+#
+# Edit this file to change what the agent watches. Nothing else needs to change.
+#
+# Adding a channel:
+#   - Easiest: add `handle: SomeHandle` (the @name from the channel URL) and
+#     leave `id` blank. The collector resolves it on the next run and caches
+#     the result in knowledge/channel_ids.json.
+#   - Most reliable: paste the UC... channel id into `id`. Handles change;
+#     channel ids do not.
+#
+# Every channel id below was resolved live on 2026-09-21 and the `name` is the
+# title YouTube returned at that time. If a channel is renamed or sold, the id
+# still points at the same channel - check the name in the collector output.
+#
+# tier 1 = mine every run. tier 2 = only surfaces when a lane keyword hits.
+
+version: 1
+
+defaults:
+  lookback_days: 3          # how far back a video counts as "new"
+  max_candidates: 25        # cap on the ranked shortlist handed to the agent
+  per_channel_limit: 6      # newest N entries read per channel feed
+  resolve_timeout_seconds: 20
+
+channels:
+  # --- AI agents and AI engineering -------------------------------------
+  - id: UCLKPca3kwwd-B59HNr-_lvA
+    name: AI Engineer
+    handle: aiDotEngineer
+    lanes: [agents, techniques]
+    tier: 1
+  - id: UCXZCJLdBC09xxGZ6gcdrc6A
+    name: OpenAI
+    handle: OpenAI
+    lanes: [agents, tooling]
+    tier: 1
+  - id: UCP7jMXSY2xbc3KCAE0MHQ-A
+    name: Google DeepMind
+    handle: GoogleDeepMind
+    lanes: [agents, tooling]
+    tier: 2
+  - id: UCC-lyoTfSrcJzA1ab3APAgw
+    name: LangChain
+    handle: LangChain
+    lanes: [agents, tooling]
+    tier: 1
+  - id: UC_x36zCEGilGpB1m-V4gmjg
+    name: IndyDevDan
+    handle: indydevdan
+    lanes: [agents, techniques]
+    tier: 1
+  - id: UCMwVTLZIRRUyyVrkjDpn4pA
+    name: Cole Medin
+    handle: ColeMedin
+    lanes: [agents, techniques]
+    tier: 1
+  - id: UC55ODQSvARtgSyc8ThfiepQ
+    name: Sam Witteveen
+    handle: samwitteveenai
+    lanes: [agents, techniques]
+    tier: 1
+  - id: UCv83tO5cePwHMt1952IVVHw
+    name: James Briggs
+    handle: jamesbriggs
+    lanes: [agents, techniques]
+    tier: 1
+  - id: UC7mHKIdjuKTJVamHqR5JTRg
+    name: Gregory Kamradt
+    handle: GregKamradt
+    lanes: [agents, techniques]
+    tier: 1
+  - id: UCNJ1Ymd5yFuUPtn21xtRbbw
+    name: AI Explained
+    handle: aiexplained-official
+    lanes: [agents]
+    tier: 2
+  - id: UCZHmQk67mSJgfCCTn7xBfew
+    name: Yannic Kilcher
+    handle: YannicKilcher
+    lanes: [agents]
+    tier: 2
+  - id: UCbfYPyITQ-7l4upoX8nvctg
+    name: Two Minute Papers
+    handle: TwoMinutePapers
+    lanes: [agents]
+    tier: 2
+  - id: UCawZsQWqfGSbCI5yjkdVkTA
+    name: Matthew Berman
+    handle: matthew_berman
+    lanes: [agents, tooling]
+    tier: 2
+  - id: UChpleBmo18P08aKCIgti38g
+    name: Matt Wolfe
+    handle: mreflow
+    lanes: [tooling, saas]
+    tier: 2
+  - id: UCR9j1jqqB5Rse69wjUnbYwA
+    name: All About AI
+    handle: AllAboutAI
+    lanes: [agents, techniques]
+    tier: 2
+  - id: UC0m81bQuthaQZmFbXEY9QSw
+    name: AICodeKing
+    handle: AICodeKing
+    lanes: [tooling]
+    tier: 2
+  - id: UCRJFAp0rewx8kzdhEqDHIlA
+    name: The AI Advantage
+    handle: TheAIAdvantage
+    lanes: [techniques, saas]
+    tier: 2
+  - id: UCqcbQf6yw5KzRoDDcZ_wBSw
+    name: Wes Roth
+    handle: WesRoth
+    lanes: [agents]
+    tier: 2
+  - id: UCvKRFNawVcuz4b9ihUTApCg
+    name: David Shapiro
+    handle: DaveShap
+    lanes: [agents]
+    tier: 2
+  - id: UCHXa4OpASJEwrHrLeIzw7Yg
+    name: Nicholas Renotte
+    handle: nicholasrenotte
+    lanes: [agents, techniques]
+    tier: 2
+  - id: UCfzlCWGWYyIQ0aLC5w48gBQ
+    name: sentdex
+    handle: sentdex
+    lanes: [techniques]
+    tier: 2
+  - id: UCsBjURrPoezykLs9EqgamOA
+    name: Fireship
+    handle: Fireship
+    lanes: [tooling, techniques]
+    tier: 2
+  - id: UC8ENHE5xdFSwx71u3fDH5Xw
+    name: ThePrimeagen
+    handle: ThePrimeagen
+    lanes: [techniques, tooling]
+    tier: 2
+  - id: UC50NEh3uvZ2KJFoVbolEJLQ
+    name: DevDocs
+    handle: DevDocs
+    lanes: [agents, tooling]
+    tier: 2
+
+  # --- SaaS, product, distribution ---------------------------------------
+  - id: UCPjNBjflYl0-HQtUvOx0Ibw
+    name: Greg Isenberg
+    handle: GregIsenberg
+    lanes: [saas]
+    tier: 1
+  - id: UChhw6DlKKTQ9mYSpTfXUYqA
+    name: Starter Story
+    handle: starterstory
+    lanes: [saas]
+    tier: 2
+  - id: UCroeMSea_O-xfgDvgbJGVQA
+    name: MicroConf
+    handle: MicroConf
+    lanes: [saas]
+    tier: 1
+  - id: UCJiSw1RWy_IZlZMX09UwjCw
+    name: Indie Hackers
+    handle: IndieHackers
+    lanes: [saas]
+    tier: 1
+  - id: UCwOILzAcxK5CM2M7oRBuWSg
+    name: SaaStr AI
+    handle: SaaStr
+    lanes: [saas]
+    tier: 2
+  - id: UCcefcZRL2oaA_uBNeo5UOWg
+    name: Y Combinator
+    handle: ycombinator
+    lanes: [saas, agents]
+    tier: 1
+  - id: UC6t1O76G0jYXOAoYCm153dA
+    name: Lenny's Podcast
+    handle: lennyspodcast
+    lanes: [saas]
+    tier: 1
+
+  # --- SEO -----------------------------------------------------------------
+  - id: UCWf2ZlNsCGDS89VBF_awNvA
+    name: Google Search Central
+    handle: GoogleSearchCentral
+    lanes: [seo]
+    tier: 1
+  - id: UCWquNQV8Y0_defMKnGKrFOQ
+    name: Ahrefs
+    handle: AhrefsCom
+    lanes: [seo]
+    tier: 1
+  - id: UCj7v9UM1aGx6GR-nsY-9u8w
+    name: Semrush
+    handle: semrush
+    lanes: [seo, local_seo]
+    tier: 1
+  - id: UCs26XZBwrSZLiTEH8wcoVXw
+    name: Moz
+    handle: Moz
+    lanes: [seo, local_seo]
+    tier: 2
+  - id: UCHNGYLRYGKBZ9nv9zp7PoSw
+    name: Search Engine Journal
+    handle: searchenginejournal
+    lanes: [seo]
+    tier: 2
+  - id: UC0qff1AEZqSogEm3JZSMPOQ
+    name: Search Engine Land
+    handle: SearchEngineLand
+    lanes: [seo]
+    tier: 2
+  - id: UCp8Kv-cF9YfA-G33CRxv6SQ
+    name: Search Engine Roundtable (RustyBrick)
+    handle: rustybrick
+    lanes: [seo, local_seo]
+    tier: 1
+  - id: UCP5A5lVxaT7cO_LehpxjTZg
+    name: Matt Diggity
+    handle: MattDiggity
+    lanes: [seo]
+    tier: 2
+  - id: UCl-Zrl0QhF66lu1aGXaTbfw
+    name: Neil Patel
+    handle: neilpatel
+    lanes: [seo]
+    tier: 2
+  - id: UCqzK60-oUOEq36uU9B1MMUg
+    name: Julia McCoy
+    handle: JuliaMcCoy
+    lanes: [seo]
+    tier: 2
+
+  # --- Local SEO and GBP ---------------------------------------------------
+  - id: UCGtqz4Xm5F76lHnSR88TcXQ
+    name: Sterling Sky Inc
+    handle: SterlingSkyInc
+    lanes: [local_seo]
+    tier: 1
+  - id: UCjbI1YH7fJGs_bx50axG0yA
+    name: BrightLocal
+    handle: BrightLocal
+    lanes: [local_seo]
+    tier: 1
+  - id: UC4Qq2xL_P9BaTFUl7mTJeeg
+    name: Local Falcon
+    handle: LocalFalcon
+    lanes: [local_seo]
+    tier: 1
+
+# Lane keywords drive the ranking of tier-2 channels and off-watchlist finds.
+lane_keywords:
+  agents:
+    - agent
+    - agentic
+    - multi-agent
+    - tool use
+    - tool calling
+    - mcp
+    - context engineering
+    - memory
+    - rag
+    - eval
+    - evaluation
+    - orchestration
+    - prompt injection
+    - coding agent
+    - codex
+    - subagent
+    - workflow automation
+  tooling:
+    - open source
+    - framework
+    - sdk
+    - api
+    - local model
+    - inference
+    - benchmark
+    - release
+    - self-host
+    - observability
+    - sandbox
+    - vector database
+  saas:
+    - saas
+    - micro saas
+    - build in public
+    - pricing
+    - churn
+    - onboarding
+    - activation
+    - product market fit
+    - distribution
+    - cold outreach
+    - business idea
+    - side project
+    - mrr
+  techniques:
+    - tutorial
+    - how i
+    - build
+    - walkthrough
+    - deep dive
+    - from scratch
+    - workflow
+    - system prompt
+    - debugging
+    - postmortem
+    - lessons
+  seo:
+    - seo
+    - search console
+    - serp
+    - core update
+    - backlink
+    - schema
+    - crawl
+    - indexing
+    - keyword
+    - ai overviews
+    - llm visibility
+    - geo
+    - content strategy
+  local_seo:
+    - local seo
+    - google business profile
+    - gbp
+    - map pack
+    - google maps
+    - citations
+    - reviews
+    - service area
+    - multi-location
+    - proximity
+    - spam fighting
+
+# Titles matching these are ranked down hard - low-substance formats.
+demote_patterns:
+  - "reaction"
+  - "is dead"
+  - "shocked"
+  - "insane"
+  - "you won't believe"
+  - "top 10 ai tools"
+  - "make $"
+  - "in 60 seconds"
+  - "#shorts"
+
+# Searches the agent runs itself when the feeds are thin. Not fetched by the
+# collector - they are handed to the agent as leads.
+search_leads:
+  - site:youtube.com agent evaluation harness walkthrough
+  - site:youtube.com coding agent subagents workflow
+  - site:youtube.com mcp server build tutorial
+  - site:youtube.com local seo google business profile 2026 test
+  - site:youtube.com ai overviews ranking study
+  - site:youtube.com micro saas teardown pricing

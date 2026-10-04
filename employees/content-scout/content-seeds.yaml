@@ -1,0 +1,78 @@
+# Content Desk - seeds, lanes and rules for the Fernway blog (Fernway is a fictional company)
+#
+# Edit this file to steer what gets written. The collector reads it every run.
+
+version: 1
+
+site:
+  domain: fernway.example
+  blog_base: https://fernway.example/blog/
+  sitemap: https://fernway.example/sitemap.xml
+  autocomplete_gl: us
+  autocomplete_hl: en
+
+# Where a post should send the reader. The brief must name one of these.
+cta_targets:
+  profile_check: https://fernway.example/free-profile-check
+  review_requests: https://fernway.example/review-requests
+  pricing: https://fernway.example/pricing
+
+# Weekly mix. Buyer-intent posts are rarer and harder; practitioner posts are the easy wins.
+lanes:
+  buyer:
+    per_week: 2
+    intent: comparing or choosing tools and services
+    examples: ["review request software for salons", "local rank tracker for small business"]
+  practitioner:
+    per_week: 3
+    intent: an owner or agency mid-job with a specific question
+    examples: ["why did my google reviews disappear", "how to reply to a fake google review"]
+  top_funnel:
+    per_week: 2
+    intent: broad local marketing questions, only when the SERP is genuinely weak
+    examples: ["what is the map pack", "local seo for dentists"]
+
+# Seed queries. The collector expands each through autocomplete to find the real long-tail phrasings.
+seeds:
+  - google business profile
+  - google reviews
+  - review request
+  - reply to google reviews
+  - fake google reviews
+  - google business profile categories
+  - map pack ranking
+  - local seo for dentists
+  - local seo for salons
+  - local seo for plumbers
+
+# Domain classes for the winnability gate. DR for anything not listed is fetched live by
+# dr_check.py and cached for 30 days.
+domain_classes:
+  ugc: [reddit.com, quora.com, facebook.com, medium.com, linkedin.com]
+  video: [youtube.com]
+  google: [support.google.com, developers.google.com, business.google.com]
+  publisher: [semrush.com, ahrefs.com, moz.com, searchengineland.com, hubspot.com, backlinko.com]
+  competitor: [birdeye.com, podium.com, grade.us, nicejob.com]
+
+# Winnability gate, applied by the agent after reading the live top 10.
+gate:
+  our_dr: 25
+  peer_band: 15             # within +/- this of our DR = PEER
+  weak_below: 30            # DR under this = WEAK
+  wall_at: 85               # DR at or above this, non-UGC = PUBLISHER wall
+  winnable_needs_top10: 2   # at least this many UGC/PEER/WEAK results in the top 10
+  winnable_needs_top5: 1    # ...and at least this many in the top 5
+  skip_if_top5_all_wall: true
+
+brief_rules:
+  first_party_data_required: true   # every post carries one Fernway data element
+  max_words_brief: 700
+  cta_required: true
+  internal_links_required: true
+
+# What Fernway can honestly say about itself. Briefs and posts may only cite these.
+proof_points:
+  - Free Google Business Profile check with a scored list of fixes
+  - Review requests by SMS and email, with reminders
+  - Weekly local rank tracking for up to 10 keywords
+  - Reply suggestions for new reviews

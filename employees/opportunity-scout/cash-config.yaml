@@ -1,0 +1,131 @@
+# Cash Builds - operating parameters (Opportunity Scout, repointed 2026-09-28)
+#
+# The SOUL reads this at the start of every run; cash_signal_collector.py reads the
+# sources and vocabulary. Change numbers here, not in SOUL.md.
+
+version: 1
+
+# --- What counts as a cash build ---------------------------------------------
+limits:
+  max_build_days: 5            # one developer, AI-assisted
+  first_dollar_within_days: 30
+  price_points_usd: [9, 19, 29, 49, 99]   # one-off or monthly; anything needing a sales call is out
+
+# --- Where the founder can sell without an audience ---------------------------
+channels_owned:
+  - Fernway blog and free profile check (small-business owners and agencies)
+  - Fernway customers and free accounts (in-app message, email)
+  - Prospect Finder's daily list of local businesses with fixable gaps
+  - r/smallbusiness and r/localseo (post as a practitioner, not an ad)
+  - WordPress.org plugin directory (free plugin, paid pro)
+  - Chrome Web Store (free extension, paid tier)
+  - Gumroad / Lemon Squeezy (one-off tools, templates, reports; no company setup needed)
+
+# --- What the founder already owns (sell-what-you-have lane) -------------------
+assets:
+  - name: Fernway profile check
+    what: free Google Business Profile check with scored findings
+    sell_as: a paid branded report for agencies
+  - name: Review request flow
+    what: SMS and email review requests already built into the app
+    sell_as: a standalone review-request widget
+  - name: Prospect Finder data
+    what: daily lists of local businesses with fixable profile gaps
+    sell_as: lead lists for marketing freelancers
+
+# --- Sources -------------------------------------------------------------------
+# Reddit: RSS with the collector's own user-agent, one request every 8 s (bursts get 429).
+subreddits:
+  asks: [SEO, localseo, smallbusiness, Entrepreneur, webdev, agency, marketing, digital_marketing,
+         freelance, shopify, Wordpress, realtors, restaurantowners, Contractor, Plumbing, HVAC, ecommerce,
+         SomebodyMakeThis, RequestABot, AppIdeas]
+  builders: [SideProject, microsaas, indiehackers, SaaS, EntrepreneurRideAlong]
+
+# Phrases that mean someone is asking for a tool or saying they would pay.
+ask_phrases:
+  - '"is there a tool"'
+  - '"looking for a tool"'
+  - '"anyone know a tool"'
+  - '"recommend a tool"'
+  - '"any tool that"'
+  - '"would pay for"'
+  - '"willing to pay"'
+  - '"does anyone have a script"'
+  - '"how do you automate"'
+  - '"alternative to"'
+
+# Hacker News full-text (Algolia), last 30 days.
+hn_queries:
+  - '"is there a tool"'
+  - '"would pay for"'
+  - '"I built" "first paying"'
+  - '"made my first" dollar'
+  - '"side project" revenue'
+
+# Quora and forums have no feeds; the collector asks a web search engine for
+# site:quora.com question titles (the title is the ask) and never opens Quora itself.
+quora_queries:
+  - '"is there a tool" local seo'
+  - '"is there a tool" google business profile'
+  - '"is there a tool" small business'
+  - '"would pay for" tool small business'
+  - '"best tool for" agencies reporting'
+  - '"how do I automate" small business'
+
+feeds:
+  localsearchforum: https://www.localsearchforum.com/forums/-/index.rss
+  product_hunt: https://www.producthunt.com/feed
+  google_news_tools: https://news.google.com/rss/search?q=%22looking+for+a+tool%22+OR+%22is+there+a+tool%22+small+business
+  google_news_seo: https://news.google.com/rss/search?q=local+seo+tool+launch
+
+stackexchange:
+  sites: [webmasters, wordpress]
+  queries: ["tool recommendation", "how to automate", "is there a plugin"]
+
+# WordPress.org: a search where the top plugins are old or badly rated is a gap.
+wordpress_searches: [google business profile, local seo, geo grid rank, citation builder, review reply,
+                     schema local business, google reviews widget, service area pages, nap consistency]
+
+# GitHub (public search API; set GITHUB_TOKEN in .env to search faster).
+github:
+  rising_topics: [seo, local-seo, wordpress-plugin, chrome-extension, automation, ai-agent, scraper, n8n, invoice, crm]
+  rising_min_stars: 40
+  rising_created_days: 60
+  issue_terms: [seo, wordpress, google business profile, chrome extension, invoice, small business, reporting, scheduling]
+  issue_min_reactions: 15
+  issue_created_days: 180
+  selfhosted_min_stars: 2000
+
+# --- Vocabulary (ranks items; never filters them out) -------------------------
+signals:
+  paying:
+    weight: 4.0
+    terms: [would pay, willing to pay, happy to pay, budget, "$", per month, /mo, subscription, hire someone,
+            fiverr, upwork, freelancer, paid for, paying for, bought, purchased, worth paying]
+  asking:
+    weight: 3.0
+    terms: [is there a tool, looking for a tool, anyone know, recommend, any tool, alternative to,
+            does anyone have, how do you automate, how do i automate, need a way to, wish there was]
+  pain:
+    weight: 2.0
+    terms: [manually, by hand, spreadsheet, hours every, every week, every day, copy paste, tedious,
+            painful, waste of time, still doing, no easy way]
+  small_build:
+    weight: 2.0
+    terms: [chrome extension, wordpress plugin, script, csv, spreadsheet, bookmarklet, calculator, generator,
+            checker, template, report, widget, zapier, make.com, api, scraper, converter, tracker]
+  our_turf:
+    weight: 2.0
+    terms: [google business profile, gbp, google maps, map pack, local seo, citations, reviews, geo grid,
+            nap, service area, agency, clients, rank tracking, schema, seo]
+  proof:
+    weight: 2.5
+    terms: [mrr, first paying, paying customers, revenue, sold, sales, made $, profit, customers in]
+
+demote:
+  weight: -5.0
+  terms: [hiring, "we're hiring", funding, series a, crypto, nft, token, web3, stock, ipo, layoffs,
+          "who is hiring", "raised $", giveaway, meme, rant, politics]
+
+max_per_source: 25
+max_shortlist: 50

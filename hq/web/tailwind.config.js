@@ -1,0 +1,55 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ["./index.html", "./src/**/*.{ts,tsx}"],
+  theme: {
+    extend: {
+      colors: {
+        void: "#02050b",
+        deck: "#060d1a",
+        glass: "rgba(9, 22, 40, 0.72)",
+        line: "#1b3a57",
+        ink: "#d4ecff",
+        dim: "#7894b3",
+        cyan: { DEFAULT: "#29d9f5", soft: "#0e7490" },
+        amber: { DEFAULT: "#f7b538", soft: "#8a5a10" },
+        coral: { DEFAULT: "#ff8a65", soft: "#9a3f22" },
+        mint: { DEFAULT: "#3ee6a8", soft: "#0f6e4d" },
+        alert: { DEFAULT: "#ff4d6d", soft: "#7a1d2e" },
+        gold: "#f4dca0",
+      },
+      fontFamily: {
+        display: ["Orbitron", "Exo 2", "system-ui", "sans-serif"],
+        body: ["'Exo 2'", "system-ui", "sans-serif"],
+        mono: ["'IBM Plex Mono'", "ui-monospace", "monospace"],
+      },
+      boxShadow: {
+        glow: "0 0 0 1px rgba(41,217,245,.35), 0 0 24px rgba(41,217,245,.18)",
+        "glow-amber": "0 0 0 1px rgba(247,181,56,.4), 0 0 24px rgba(247,181,56,.2)",
+        "glow-alert": "0 0 0 1px rgba(255,77,109,.45), 0 0 24px rgba(255,77,109,.25)",
+      },
+      keyframes: {
+        scan: { "0%": { transform: "translateY(-100%)" }, "100%": { transform: "translateY(100%)" } },
+        flicker: { "0%,100%": { opacity: "1" }, "47%": { opacity: ".92" }, "50%": { opacity: ".7" }, "53%": { opacity: ".95" } },
+        pulseRing: { "0%": { transform: "scale(.8)", opacity: ".8" }, "100%": { transform: "scale(1.6)", opacity: "0" } },
+        typeIn: { from: { clipPath: "inset(0 100% 0 0)" }, to: { clipPath: "inset(0 0 0 0)" } },
+        ticker: { from: { transform: "translateX(0)" }, to: { transform: "translateX(-50%)" } },
+        sweep: { from: { transform: "rotate(0deg)" }, to: { transform: "rotate(360deg)" } },
+        wipe: { from: { opacity: "0", clipPath: "inset(0 0 100% 0)" }, to: { opacity: "1", clipPath: "inset(0 0 0 0)" } },
+        rise: { from: { opacity: "0", transform: "translateY(6px)" }, to: { opacity: "1", transform: "translateY(0)" } },
+        blink: { "0%,100%": { opacity: "1" }, "50%": { opacity: ".25" } },
+      },
+      animation: {
+        scan: "scan 6s linear infinite",
+        flicker: "flicker 5s ease-in-out infinite",
+        pulseRing: "pulseRing 2s ease-out infinite",
+        typeIn: "typeIn .6s steps(24) both",
+        ticker: "ticker 60s linear infinite",
+        sweep: "sweep 4s linear infinite",
+        wipe: "wipe .45s cubic-bezier(.2,.8,.2,1) both",
+        rise: "rise .5s ease-out both",
+        blink: "blink 1.2s steps(2) infinite",
+      },
+    },
+  },
+  plugins: [],
+};

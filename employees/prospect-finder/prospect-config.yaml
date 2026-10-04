@@ -1,0 +1,34 @@
+# Prospect Finder settings. Edit freely; the collector reads this every run.
+#
+# Each run searches Google Maps (via DataForSEO) for a few niche + city pairs it has not searched
+# in the last `recheck_days`, compares every business with the local leaders, and keeps the ones
+# with clear, fixable Google Business Profile gaps. Claudia sends the shortlist to Telegram; the
+# founder does the outreach.
+
+market: United States          # outreach is B2B email/phone; US CAN-SPAM allows it with an opt-out
+searches_per_run: 6            # niche x city pairs per run (about $0.02 total)
+shortlist_size: 8              # prospects in each Telegram list
+max_per_search: 3              # spread the list across niches and cities
+max_spend_usd_per_run: 0.10    # hard stop on DataForSEO spend per run
+recheck_days: 45               # don't search the same niche + city again sooner
+
+# Search phrase -> niche key used in the ledger.
+niches:
+  dentist: dental
+  hair salon: salon
+  plumber: plumbing
+  hvac contractor: hvac
+  landscaping company: landscaping
+  physiotherapist: physio
+
+# Mid-size US metros: busy enough to have competition, small enough that a local business can
+# still win the map pack. DataForSEO location_name format.
+cities:
+  - Tampa,Florida,United States
+  - Charlotte,North Carolina,United States
+  - Nashville,Tennessee,United States
+  - Columbus,Ohio,United States
+  - Austin,Texas,United States
+  - Denver,Colorado,United States
+  - Boise,Idaho,United States
+  - Omaha,Nebraska,United States

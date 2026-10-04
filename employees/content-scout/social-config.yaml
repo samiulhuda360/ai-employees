@@ -1,0 +1,62 @@
+# Content Desk - daily social post ideas for Fernway (a fictional company)
+#
+# The ideas are DRAFTS delivered to Telegram for the founder to write and post.
+# Facebook removed group posting from its API in 2024 and page posting needs Meta app
+# review, so automatic posting is deliberately not part of this.
+
+version: 1
+
+brand:
+  name: Fernway
+  site: https://fernway.example
+  one_liner: A local-marketing app for small businesses - profile checks, review requests and local rank tracking.
+  voice:
+    - direct and practical, written by a practitioner not a marketer
+    - specific numbers and named sources over adjectives
+    - no hype words (game-changer, revolutionary, secret, insane)
+    - never promise rankings or results
+    - plain ASCII, short paragraphs, one idea per post
+
+platforms:
+  facebook_page:
+    posts_per_day: 1
+    max_chars: 900
+    links_allowed: true
+    style: brand voice, can mention Fernway features, one CTA link
+    hashtags: 3
+  facebook_group:
+    posts_per_day: 1
+    max_chars: 700
+    links_allowed: false        # most groups ban self-promo links
+    style: >
+      value-first. A tip, a finding, or a question that starts a discussion.
+      No product name in the post body.
+    hashtags: 0
+  linkedin:
+    posts_per_day: 1
+    max_chars: 1300
+    links_allowed: true         # put the link in the first comment, not the post
+    style: agency-owner angle; what this means for client work
+    hashtags: 4
+
+link_targets:
+  free_profile_check: https://fernway.example/free-profile-check
+  pricing: https://fernway.example/pricing
+  blog: https://fernway.example/blog
+
+hashtag_pool: [LocalSEO, GoogleBusinessProfile, GoogleReviews, SmallBusinessMarketing, LocalSearch]
+
+sources:
+  - today's Growth Scout daily radar (market changes, Google news, social radar)
+  - YouTube Watcher knowledge base entries in the local_seo and seo lanes
+  - today's blog ideas (turn an angle into a teaser)
+  - proof points from content-seeds.yaml
+  - evergreen fundamentals, only when nothing fresh exists
+
+rules:
+  - every factual claim in a post names its source; if the source is a forum post, say so
+  - never invent statistics, customer counts, case results or quotes
+  - never post the same angle twice in 14 days (check social-ledger.md)
+  - one post per platform per day, no more
+  - never promise future features or any commitment on Fernway's behalf; describe only what exists today (proof_points)
+  - count sources honestly - one forum thread is "one report", never "many users"

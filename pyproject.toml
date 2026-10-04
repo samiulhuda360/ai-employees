@@ -1,0 +1,12 @@
+[tool.pytest.ini_options]
+testpaths = ["tests", "employees/youtube-watcher/tests"]
+addopts = "-q"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 140
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "UP"]
+ignore = ["E501", "E731", "B023"]

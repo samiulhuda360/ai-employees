@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --cut: 14px;
+}
+
+html, body, #root { height: 100%; }
+body {
+  @apply bg-void text-ink font-body antialiased;
+  background:
+    radial-gradient(1200px 600px at 70% -10%, rgba(41,217,245,.10), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(167,139,250,.10), transparent 60%),
+    #02050b;
+  overflow: hidden;
+}
+
+/* Hex lattice under everything, drifting slowly: the deck plating. */
+body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed; inset: -10%; z-index: 0;
+  opacity: .5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='64' viewBox='0 0 56 64'%3E%3Cpath d='M28 2 52 16v32L28 62 4 48V16z' fill='none' stroke='%2329d9f5' stroke-opacity='.07'/%3E%3C/svg%3E");
+  animation: drift 90s linear infinite;
+}
+@keyframes drift { from { transform: translate3d(0,0,0); } to { transform: translate3d(-56px,-64px,0); } }
+#root { position: relative; z-index: 1; }
+
+/* A faint scanline sheet over everything: the hologram look, without hurting legibility. */
+body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed; inset: 0; z-index: 60;
+  background: repeating-linear-gradient(to bottom, rgba(255,255,255,.018) 0 1px, transparent 1px 3px);
+  mix-blend-mode: screen;
+}
+
+@layer components {
+  /* Glass panel with cut corners: the core building block. */
+  .panel {
+    @apply relative bg-glass backdrop-blur-md;
+    clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+    border: 1px solid rgba(41,217,245,.22);
+  }
+  .panel::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(135deg, rgba(41,217,245,.16), transparent 30%, transparent 70%, rgba(41,217,245,.10));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    padding: 1px;
+  }
+  /* Corner brackets: the HUD frame every panel sits in. */
+  .panel::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(#29d9f5, #29d9f5) top right / 14px 1.5px no-repeat,
+      linear-gradient(#29d9f5, #29d9f5) top right / 1.5px 14px no-repeat,
+      linear-gradient(#29d9f5, #29d9f5) bottom left / 14px 1.5px no-repeat,
+      linear-gradient(#29d9f5, #29d9f5) bottom left / 1.5px 14px no-repeat;
+    opacity: .55;
+  }
+  .panel-alert { border-color: rgba(255,77,109,.5); }
+  .panel-alert::after { filter: hue-rotate(160deg); }
+  .panel-title {
+    @apply font-display text-[11px] tracking-[.28em] uppercase text-cyan/90;
+  }
+  .hud-label { @apply font-mono text-[10px] uppercase tracking-[.2em] text-dim; }
+  .glow-text { text-shadow: 0 0 12px rgba(41,217,245,.55); }
+  .btn {
+    @apply inline-flex items-center gap-2 px-3 py-1.5 font-display text-[11px] uppercase tracking-[.18em]
+           text-cyan border border-cyan/40 bg-cyan/5 transition hover:bg-cyan/15 hover:shadow-glow
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan/70 disabled:opacity-40 disabled:pointer-events-none;
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  }
+  .btn-amber { @apply text-amber border-amber/50 bg-amber/5 hover:bg-amber/15 hover:shadow-glow-amber; }
+  .btn-alert { @apply text-alert border-alert/50 bg-alert/5 hover:bg-alert/15 hover:shadow-glow-alert; }
+  .btn-ghost { @apply text-dim border-line bg-transparent hover:text-ink; }
+  .chip { @apply inline-flex items-center gap-1 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider border; }
+  .input {
+    @apply w-full bg-deck/80 border border-line px-3 py-2 font-mono text-sm text-ink placeholder:text-dim/60
+           focus:outline-none focus:border-cyan/70 focus:shadow-glow;
+  }
+  /* Header ticker: one long line, duplicated, scrolling. Pauses on hover. */
+  .ticker { @apply relative overflow-hidden whitespace-nowrap; mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
+  .ticker-track { @apply inline-flex animate-ticker; }
+  .ticker:hover .ticker-track { animation-play-state: paused; }
+  /* Radar sweep behind fleet numbers. */
+  .sweep { background: conic-gradient(from 0deg, rgba(41,217,245,.0) 0deg, rgba(41,217,245,.18) 40deg, transparent 60deg); }
+  /* Glowing status bar under a number. */
+  .bar { @apply h-1 w-full bg-line/70; }
+  .bar > i { @apply block h-full; box-shadow: 0 0 10px currentColor; background: currentColor; transition: width .8s cubic-bezier(.2,.8,.2,1); }
+  .nav-active::before { content: ""; @apply absolute left-0 top-1 bottom-1 w-[3px] bg-cyan; box-shadow: 0 0 10px #29d9f5; }
+  .scroll-thin { scrollbar-width: thin; scrollbar-color: #1b3a57 transparent; }
+  .prose-hq { @apply text-[14px] leading-relaxed text-ink/90; }
+  .prose-hq h1, .prose-hq h2, .prose-hq h3 { @apply font-display text-cyan tracking-wider mt-4 mb-2; }
+  .prose-hq h1 { @apply text-base; } .prose-hq h2 { @apply text-sm; } .prose-hq h3 { @apply text-xs; }
+  .prose-hq p { @apply my-2; }
+  .prose-hq ul { @apply list-disc pl-5 my-2 space-y-1; }
+  .prose-hq ol { @apply list-decimal pl-5 my-2 space-y-1; }
+  .prose-hq a { @apply text-cyan underline decoration-cyan/40 underline-offset-2 break-all; }
+  .prose-hq code { @apply font-mono text-[12px] text-amber bg-deck px-1; }
+  .prose-hq pre { @apply font-mono text-[12px] bg-deck p-3 overflow-x-auto border border-line; }
+  .prose-hq table { @apply w-full text-[12px] my-3 border-collapse; }
+  .prose-hq th { @apply text-left font-display text-[10px] tracking-widest text-cyan border-b border-line py-1 pr-3; }
+  .prose-hq td { @apply border-b border-line/60 py-1 pr-3 align-top; }
+  .prose-hq strong { @apply text-ink; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

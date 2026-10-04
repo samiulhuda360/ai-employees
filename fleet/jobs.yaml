@@ -1,0 +1,431 @@
+# Every scheduled job in the fleet: who runs it, when (cron, local time), the script whose output is
+# injected into the prompt, and where the result goes. 'model: none' jobs run the script alone and
+# send its output as the message, so they cost no model tokens (relays, the guardian).
+
+jobs:
+- agent: claudia
+  name: Daily fleet report
+  schedule: 0 9 * * *
+  runs_on: server
+  script: fleet_status_collector.py
+  model: default
+  deliver: telegram
+  paused: false
+  prompt: 'Write the daily fleet report for the founder on Telegram. Follow SOUL.md sections 1 and 2. The injected
+    fleet status snapshot covers the last 24 hours; open the full report files it lists when you need detail. Order:
+    first anything broken or needing the founder''s decision (failed or missed runs, errors, unusually short reports),
+    then one short line per agent with its headline finding and the report link or name, then anything new in the
+    ledgers. YouTube Watcher runs on the founder''s PC; if its reports are missing here, say they have not synced
+    rather than calling it broken. Keep it under about 200 words. Always send a message, even on a quiet day: never
+    reply [SILENT]. If nothing important happened, send two lines confirming each agent is healthy and what runs
+    next, so the founder knows the fleet is alive. Do not change, run, or pause anything in this job; only report.
+    Output only the finished Telegram message: no working notes, no reasoning, no drafts, and never the same summary
+    twice. The fallback-provider notice line is added automatically; do not repeat or discuss it.'
+- agent: claudia
+  name: Weekly agent audit
+  schedule: 0 17 * * 0
+  runs_on: server
+  script: fleet_weekly_collector.py
+  model: default
+  deliver: telegram
+  paused: false
+  prompt: 'Run the weekly agent audit. Follow SOUL.md section 3 and the "North star, quiet hours and records" section.
+    The injected snapshot covers the last 7 days, including every report headline. Read each agent''s SOUL.md and
+    relevant full reports before judging. FIRST write the record file ~/agents/chief-assistant/records/weekly-<ISO
+    year>-W<ISO week>.md: a table scoring every agent useful / weak / broken with one line of evidence each (reports
+    and dates), the gaps found (repeated failures, stuck verdicts, data marked unknown, stale ledgers, thin output,
+    output that never changed a decision), what changed since last week''s record, and the north-star numbers (paying
+    Fernway clients, MRR) if the founder has given them. THEN send the Telegram message in clean bullets: the scorecard
+    in one line per agent, then at most three improvements ranked by expected benefit toward more Fernway clients,
+    each with the agent, the evidence, the exact change, and how the founder will know it worked. End by asking
+    which proposals to apply. Do not apply any change in this job. Output only the finished Telegram message: no
+    working notes, never the same summary twice. The fallback-provider notice line is added automatically; do not
+    discuss it. SCORING RULES: judge each agent by the quality and usefulness of its OWN output, not by the problems
+    it reports. An agent that correctly finds problems (Code Health finding exposed keys, Client Wins finding at-risk
+    customers) is USEFUL. BROKEN means its jobs failed or its output was unusable. When you cite a problem an agent
+    found, put it under ''Needs attention first'' as the problem, not as the agent''s score.'
+- agent: claudia
+  name: Relay blog ideas
+  schedule: 45 9 * * *
+  runs_on: server
+  script: relay_blog_ideas.py
+  model: none (script output is the message)
+  deliver: telegram
+  paused: false
+- agent: claudia
+  name: Relay social ideas
+  schedule: 15 11 * * *
+  runs_on: server
+  script: relay_social_ideas.py
+  model: none (script output is the message)
+  deliver: telegram
+  paused: false
+- agent: claudia
+  name: Relay code health
+  schedule: 10 8-22 * * *
+  runs_on: server
+  script: relay_code_health.py
+  model: none (script output is the message)
+  deliver: telegram
+  paused: false
+- agent: claudia
+  name: Morning check-in
+  schedule: 30 8 * * 1-5
+  runs_on: server
+  script: check_in_context.py
+  model: default
+  deliver: telegram
+  paused: false
+  prompt: 'Morning check-in. In 1-2 lines recap yesterday (plan vs done from journal.md; if nothing was logged,
+    say so kindly). Suggest the 3 most valuable things to work on today, drawn from Prospect Finder (businesses
+    to contact) and Code Health (urgent fixes). End by asking the founder to reply ''plan: ...'' with their 1-3
+    things for today. Follow the "Accountability partner" section of SOUL.md. Use only the injected context and
+    files; name the source for every suggestion. Update journal.md first if needed. ORDER MATTERS: only your final
+    message is delivered, so make it the complete check-in (max 10 lines, no headings, no working notes) ending
+    with one question.'
+- agent: claudia
+  name: Evening check-in
+  schedule: 0 17 * * 1-4
+  runs_on: server
+  script: check_in_context.py
+  model: default
+  deliver: telegram
+  paused: false
+  prompt: 'Evening check-in. Read today''s Plan in journal.md. If there is one, list it and ask what got done (reply
+    ''done: ...''); if there is none, ask what they worked on today. Follow the "Accountability partner" section
+    of SOUL.md. Use only the injected context and files; name the source for every suggestion. Update journal.md
+    first if needed. ORDER MATTERS: only your final message is delivered, so make it the complete check-in (max
+    10 lines, no headings, no working notes) ending with one question.'
+- agent: claudia
+  name: Friday weekly review
+  schedule: 30 16 * * 5
+  runs_on: server
+  script: check_in_context.py
+  model: default
+  deliver: telegram
+  paused: false
+  prompt: 'Friday weekly review. From journal.md (the last 7 days), Prospect Finder and Code Health: 1) wins this
+    week, 2) what was planned but not done and the likely reason, 3) one pattern you noticed, 4) the 3 priorities
+    you suggest for next week. Ask what got done today (reply ''done: ...'') and whether they agree with next week''s
+    priorities. This one may be up to 15 lines. Follow the "Accountability partner" section of SOUL.md. Use only
+    the injected context and files; name the source for every suggestion. Update journal.md first if needed. ORDER
+    MATTERS: only your final message is delivered, so make it the complete check-in (max 10 lines, no headings,
+    no working notes) ending with one question.'
+- agent: claudia
+  name: Weekly automation pick
+  schedule: 30 16 * * 0
+  runs_on: server
+  script: check_in_context.py
+  model: default
+  deliver: telegram
+  paused: false
+  prompt: 'Weekly automation pick. Read task-inbox.md. If it has no open items, reply exactly [SILENT]. Otherwise
+    pick the ONE open task that would save the most time per week for the least build effort, and give: why it wins,
+    the steps it involves today, how it would be automated (which existing agent or a new job; script-only where
+    possible to save tokens), rough effort, and what you need from the founder. Mark it ''planned'' in task-inbox.md
+    only after the founder says yes. Ask: ''Should I set it up?'' Follow the "Accountability partner" section of
+    SOUL.md. Use only the injected context and files; name the source for every suggestion. Update journal.md first
+    if needed. ORDER MATTERS: only your final message is delivered, so make it the complete check-in (max 10 lines,
+    no headings, no working notes) ending with one question.'
+- agent: claudia
+  name: Monthly fleet review
+  schedule: 0 10 1 * *
+  runs_on: server
+  script: fleet_monthly_collector.py
+  model: default
+  deliver: telegram
+  paused: false
+  prompt: 'Run the monthly fleet review. Follow the "North star, quiet hours and records" section of SOUL.md. The
+    injected snapshot covers 30 days plus this month''s weekly records. FIRST write ~/agents/chief-assistant/records/monthly-<YYYY-MM
+    of the month just ended>.md: per agent, its weekly scores across the month and the trend (improving / flat /
+    worse); the fleet''s biggest wins and failures; the north-star numbers month over month (paying clients, MRR)
+    as far as the founder has reported them; job-reliability (runs that failed or used the fallback model); and
+    the three changes that would most help Fernway client growth next month. THEN send a Telegram message in clean
+    bullets, max 15 lines, summarising it and asking for this month''s client count and MRR if they are missing.
+    Do not apply any change. Output only the finished message. SCORING RULES: judge each agent by the quality and
+    usefulness of its OWN output, not by the problems it reports. An agent that correctly finds problems (Code Health
+    finding exposed keys, Client Wins finding at-risk customers) is USEFUL. BROKEN means its jobs failed or its
+    output was unusable. When you cite a problem an agent found, put it under ''Needs attention first'' as the problem,
+    not as the agent''s score.'
+- agent: claudia
+  name: Relay prospects
+  schedule: 15 9 * * 1-5
+  runs_on: server
+  script: relay_prospects.py
+  model: none (script output is the message)
+  deliver: telegram
+  paused: false
+- agent: claudia
+  name: Relay client wins
+  schedule: 30 10 * * 1
+  runs_on: server
+  script: relay_client_wins.py
+  model: none (script output is the message)
+  deliver: telegram
+  paused: false
+- agent: claudia
+  name: Fleet guardian
+  schedule: 20 8,13,18 * * *
+  runs_on: server
+  script: fleet_guard.py
+  model: none (script output is the message)
+  deliver: telegram
+  paused: false
+- agent: claudia
+  name: Weekly agent tune-up
+  schedule: 30 17 * * 0
+  runs_on: server
+  script: tuneup_collector.py
+  model: default
+  deliver: telegram
+  paused: false
+  prompt: "Run the weekly agent tune-up. The injected evidence shows, for each tunable agent, what the founder approved,\
+    \ finished, rejected and parked in Hermes HQ over the last 21 days (with their notes), how many ideas they left\
+    \ undecided, what the fleet teacher learned for that agent, the rules already approved, and past proposals.\
+    \ Propose changes to how an agent works ONLY where the evidence shows a clear pattern: at least three decisions\
+    \ pointing the same way, or a VERIFIED or DEMONSTRATED learning the agent is not yet using. At most two proposals\
+    \ per agent and six in total; fewer is better; none is a valid answer. Each proposal is one imperative rule\
+    \ the agent can follow on its next run, under 35 words, concrete (name the thing to do or stop doing), and not\
+    \ a repeat of an approved rule or past proposal. Never propose anything that contacts customers, publishes,\
+    \ spends money or loosens a safety rule. Output exactly this shape and nothing before it:\n\nTUNE-UP PROPOSALS\
+    \ - <YYYY-MM-DD>\n\n1. [<agent id>] RULE: <the rule>\n   Why: <the evidence in one sentence, with counts or\
+    \ the learning title and date>\n\nAfter the list, one plain line per agent with no proposal, saying why (for\
+    \ example: not enough decisions yet). End with this line: Approve or reject each one in Hermes HQ, on that agent's\
+    \ Priority tab. Nothing changes until you approve."
+- agent: opportunity-scout
+  name: Daily cash builds
+  schedule: 0 8 * * *
+  runs_on: server
+  script: cash_signal_collector.py
+  model: default
+  deliver: chat:opportunity-scout
+  paused: false
+  prompt: 'Run today''s Cash Builds report. Follow SOUL.md exactly: read cash-config.yaml, start from the injected
+    collector output (shortlists paying, asking and proof, wordpress_gaps, assets), verify the top leads live (open
+    the thread, read the replies, check the competitor pricing page or plugin reviews), score each with the four
+    questions, and deliver the daily report in the exact shape given in SOUL.md: up to three cash builds, one SELL
+    WHAT YOU HAVE line, WATCH and REJECTED. Every number needs a URL you opened. ASCII only. Read the pipeline ledger
+    first and append today''s picks to it.'
+- agent: opportunity-scout
+  name: Fast-growth signal pulse
+  schedule: 0 21 * * *
+  runs_on: server
+  script: null
+  model: default
+  deliver: chat:opportunity-scout
+  paused: true
+  prompt: 'Check for fast-moving opportunity signals since the last pulse. Look for newly surfaced proof that someone
+    pays for a job an AI-native product could do better: a launch with real traction, a founder revenue report,
+    a listing or closed deal, a pricing change, or a model or API release that makes a previously impossible workflow
+    viable. Report at most one candidate worth acting on, with its evidence and AI wedge. If nothing material changed,
+    say so in two lines and stop - do not manufacture sparks to fill the report. Follow SOUL.md exactly and read
+    scout-config.yaml for build appetite and revenue targets. Read the decision ledger at opportunity_pipeline.md
+    first; it records ideas, not postures - a past kill or microtool-only decision applies only to that named idea
+    and expires after 30 days. Lead with the best opportunity found; never open by declining to recommend something.
+    Most of the report belongs to lane 1: AI-native SaaS in any vertical. Mark self-reported revenue and listing
+    claims as unverified. Never invent revenue, pricing, or customer counts. Give at least two direct dated source
+    URLs per serious candidate. Use ASCII-safe output. Do not implement anything.'
+- agent: opportunity-scout
+  name: 'Weekly: build this one'
+  schedule: 0 10 * * 1
+  runs_on: server
+  script: cash_signal_collector.py
+  model: default
+  deliver: chat:opportunity-scout
+  paused: false
+  prompt: 'Produce this week''s BUILD THIS ONE as specified in SOUL.md: synthesise the last seven daily Cash Builds
+    reports and the pipeline ledger, pick exactly one build inside the limits in cash-config.yaml, and give the
+    ask with its evidence, the exact deliverable (pages, inputs, outputs), a day-by-day plan inside the build limit,
+    the sales page outline (headline, three bullets, price), the launch list of ten places or people in order, what
+    must not be built in version 1, and the day-30 kill rule. Open with the BUILD THIS ONE line exactly as specified.
+    ASCII only.'
+- agent: opportunity-scout
+  name: Marketplace commercial signal scan
+  schedule: 0 11 * * 2,4,6
+  runs_on: server
+  script: null
+  model: default
+  deliver: chat:opportunity-scout
+  paused: true
+  prompt: 'Scan acquisition marketplaces for commercial proof. Read Empire Flippers listings, Flippa SaaS listings
+    and closed deals, Acquire and SideProjectors. Extract category-level patterns: what job is being paid for, price
+    points, MRR and margin ranges, multiples, acquisition channel, operational burden, and the weaknesses sellers
+    disclose. Then identify which of those paid jobs an AI-native build would do materially better, and which are
+    already well served and should be left alone. Never clone a listing, contact a seller, reveal gated details,
+    make an offer, or buy anything. Treat every listing figure as seller-supplied until corroborated and say so
+    explicitly. Return at most one recommended opportunity with full evidence, plus the category patterns that support
+    it. Follow SOUL.md exactly and read scout-config.yaml for build appetite and revenue targets. Read the decision
+    ledger at opportunity_pipeline.md first; it records ideas, not postures - a past kill or microtool-only decision
+    applies only to that named idea and expires after 30 days. Lead with the best opportunity found; never open
+    by declining to recommend something. Most of the report belongs to lane 1: AI-native SaaS in any vertical. Mark
+    self-reported revenue and listing claims as unverified. Never invent revenue, pricing, or customer counts. Give
+    at least two direct dated source URLs per serious candidate. Use ASCII-safe output. Do not implement anything.'
+- agent: growth-scout
+  name: Daily Fernway growth radar
+  schedule: 30 8 * * *
+  runs_on: server
+  script: growth_signal_collector.py
+  model: default
+  deliver: chat:growth-scout
+  paused: false
+  prompt: Run the Fernway daily product and growth radar now. Read ~/agents/growth-scout/product-dossier.md and
+    follow SOUL.md exactly. Use the injected public signal data as leads, then perform current web research across
+    official Google/GBP sources, competitor releases, practitioner communities, review sites, YouTube, X, LinkedIn,
+    Reddit, and Local Search Forum where accessible. Check every idea against existing Fernway capabilities. Find
+    product quick wins, growth/conversion improvements, content opportunities, social signals, and reliability implications.
+    Return the required decision-first daily report with no more than one primary recommendation and two runner-ups.
+    Cite direct dated URLs, distinguish fact from inference, reject weak or duplicate ideas, and do not implement
+    anything.
+- agent: growth-scout
+  name: Weekly Fernway product strategy
+  schedule: 0 14 * * 5
+  runs_on: server
+  script: weekly_growth_digest.py
+  model: default
+  deliver: chat:growth-scout
+  paused: false
+  prompt: Create the weekly Fernway product strategy brief from the collected daily reports. Read ~/agents/growth-scout/product-dossier.md
+    and follow the weekly brief rules in SOUL.md. Deduplicate repeated ideas and weight newer, primary, and independently
+    corroborated evidence more heavily. Select exactly one quick win to ship, one experiment to validate, one content
+    or original-data asset to publish, one reliability issue to address, and one larger bet to keep, change, or
+    reject. Include a seven-day execution plan, metrics, dependencies, risks, and evidence that would reverse each
+    decision. Preserve direct URLs and distinguish facts from inference. Do not implement changes.
+- agent: blog-planner
+  name: Daily blog ideas
+  schedule: 0 9 * * *
+  runs_on: server
+  script: content_signal_collector.py
+  model: default
+  deliver: local
+  paused: false
+  prompt: 'Produce today''s Fernway blog idea batch. Follow SOUL.md exactly: use the injected collector JSON, give
+    3-4 Tier A ideas you checked against the live top 10 with web search and dr_check.py, plus 8-12 Tier B quick
+    leads, in the required format. Recommend only; never write the article and never publish anything. Update content-ledger.md
+    and content-pipeline.md. Output only the batch, no working notes. ORDER MATTERS: only your final message is
+    delivered. Do every file update first, then make your final message the complete idea list in full. Never end
+    with a status line like done or list above.'
+- agent: blog-planner
+  name: Blog ideas fact check
+  schedule: 30 9 * * *
+  runs_on: server
+  script: blog_draft_for_review.py
+  model: default
+  deliver: local
+  paused: false
+  prompt: 'You are the fact checker. The injected text contains the evidence the drafting model was given (under
+    "Script Output") and its draft (the last "## Response"). If it starts with NO_DRAFT, reply exactly [SILENT].
+    Otherwise check every number, date, duration, source, URL, DR value, quote and Fernway capability in the draft.
+    A claim must be supported by the evidence, by a page you open with web search, or by proof_points. Fix what
+    you can verify, delete what you cannot, never add new unsourced claims. Mandatory checks: (1) every sentence
+    that says what Fernway does, tracks or offers - including every "If asked what tool" line - must match a proof_points
+    entry word for word in meaning; otherwise replace it with the closest real proof point or delete it; (2) never
+    let a post imply the founder or Fernway was personally involved in someone else''s case; (3) a single forum
+    thread is one report, never a trend; (4) the date in the heading line must be the date printed in the evidence
+    header (the run date), not a later day. Keep the exact format and ordering. Output ONLY the corrected list,
+    starting with its heading line, and end with one line: "Fact check: <n> changes (<short list of what changed>)".
+    No working notes before the list. The heading line is BLOG IDEAS.'
+- agent: social-planner
+  name: Daily social ideas
+  schedule: 30 10 * * *
+  runs_on: server
+  script: social_signal_collector.py
+  model: default
+  deliver: local
+  paused: false
+  prompt: 'Produce today''s Fernway social idea menu. Follow SOUL.md exactly: use the injected bundle, give 2 ideas
+    each for the Facebook page, Facebook groups, LinkedIn and X, with at least 4 different angles in total, in the
+    required format, every idea with its source. Ideas and hooks only; never write full posts and never post anything.
+    Append one line per idea to social-ledger.md. Output only the menu, no working notes. ORDER MATTERS: only your
+    final message is delivered. Do every file update first, then make your final message the complete idea list
+    in full. Never end with a status line like done or list above.'
+- agent: social-planner
+  name: Social ideas fact check
+  schedule: 0 11 * * *
+  runs_on: server
+  script: social_draft_for_review.py
+  model: default
+  deliver: local
+  paused: false
+  prompt: 'You are the fact checker. The injected text contains the evidence the drafting model was given (under
+    "Script Output") and its draft (the last "## Response"). If it starts with NO_DRAFT, reply exactly [SILENT].
+    Otherwise check every number, date, duration, source, URL, DR value, quote and Fernway capability in the draft.
+    A claim must be supported by the evidence, by a page you open with web search, or by proof_points. Fix what
+    you can verify, delete what you cannot, never add new unsourced claims. Mandatory checks: (1) every sentence
+    that says what Fernway does, tracks or offers - including every "If asked what tool" line - must match a proof_points
+    entry word for word in meaning; otherwise replace it with the closest real proof point or delete it; (2) never
+    let a post imply the founder or Fernway was personally involved in someone else''s case; (3) a single forum
+    thread is one report, never a trend; (4) the date in the heading line must be the date printed in the evidence
+    header (the run date), not a later day. Keep the exact format and ordering. Output ONLY the corrected list,
+    starting with its heading line, and end with one line: "Fact check: <n> changes (<short list of what changed>)".
+    No working notes before the list. The heading line is SOCIAL IDEAS.'
+- agent: prospect-finder
+  name: Daily prospects
+  schedule: 45 8 * * 1-5
+  runs_on: server
+  script: prospect_collector.py
+  model: none (script output is the message)
+  deliver: local
+  paused: false
+  prompt: 'Produce today''s Fernway prospect list. Follow SOUL.md exactly: use only the injected collector JSON,
+    copy every number and contact detail verbatim, write one plain opener sentence per prospect about their biggest
+    gap, and output only the list starting with PROSPECTS. If the JSON has a NO_CREDENTIALS error, output only the
+    one setup line from SOUL.md. If there are no candidates, reply exactly [SILENT]. ORDER MATTERS: only your final
+    message is delivered.'
+- agent: client-wins
+  name: Weekly client wins
+  schedule: 0 10 * * 1
+  runs_on: server
+  script: client_pulse_collector.py
+  model: none (script output is the message)
+  deliver: local
+  paused: false
+  prompt: 'Produce this week''s Fernway client wins report. Follow SOUL.md exactly: use only the injected collector
+    JSON, copy every win, risk and number verbatim, give one action per account and a two-sentence note for each
+    win, and output only the report starting with CLIENT WINS. If the JSON has an error, output only the one setup
+    line from SOUL.md. ORDER MATTERS: only your final message is delivered.'
+- agent: youtube-watcher
+  name: Daily YouTube learning run
+  schedule: 30 20 * * *
+  runs_on: pc
+  script: youtube_signal_collector.py
+  model: default
+  deliver: chat:youtube-watcher
+  paused: false
+  prompt: 'Run the daily YouTube learning pass now. Follow SOUL.md exactly. First read <project>\youtube-watcher\knowledge-base.md
+    so you do not re-learn what is already recorded. The injected collector output is a ranked shortlist of new
+    videos - it is leads, not findings. Pick at most five videos worth real attention, preferring demos, builds,
+    postmortems, benchmarks, and teardowns over reaction and list content. For each one, fetch the transcript with:
+    uv run python ''<project>\youtube-watcher\transcribe_video.py'' <VIDEO_URL> --timestamps before forming any
+    opinion. Never judge a video you have not transcribed; mark it NOT WATCHED instead. Extract applicable learnings
+    across AI agents, agent tooling, SaaS ideas, techniques, SEO, and local SEO/GBP. Label every kept item DEMONSTRATED,
+    CLAIMED, or VERIFIED, cite timestamps, note creator incentives, and flag anything that depends on a model, API,
+    or Google behavior that may have changed. Score each candidate and return the decision-first daily report defined
+    in SOUL.md. Append only qualifying ADOPT or TEST entries to <project>\youtube-watcher\knowledge-base.md, and
+    report exactly what was saved. Do not modify product code or implement recommendations.'
+- agent: youtube-watcher
+  name: Weekly YouTube learning brief
+  schedule: 0 13 * * 5
+  runs_on: pc
+  script: weekly_learning_digest.py
+  model: default
+  deliver: chat:chief-assistant
+  paused: true
+  prompt: Create the weekly YouTube learning brief from the collected daily reports. Follow the weekly brief rules
+    in SOUL.md and read <project>\youtube-watcher\knowledge-base.md first. Deduplicate hard against the daily reports
+    rather than restating them, and weight demonstrated and independently corroborated findings above claimed ones.
+    Select exactly one technique to adopt with a first implementation step, one technique to test with its success
+    criterion, one belief to update with what changed it, one tool or model worth trying and what it would replace,
+    and one thing to stop doing or tracking. For each, state what evidence would reverse the call. Trace repeated
+    ideas back to their origin so three reactions to one announcement are not counted as three sources.
+- agent: code-health
+  name: Weekly code health
+  schedule: 0 21 * * 1
+  runs_on: pc
+  script: run_code_health.py
+  model: default
+  deliver: local
+  paused: false
+  prompt: 'Produce this week''s code health report. Follow SOUL.md exactly: use the injected collector output, rank
+    by the rules, give at most 6 items under FIX THIS WEEK with exact fix commands, one line per project under LATER,
+    and compare with your previous report for CHANGED SINCE LAST WEEK. Never print secret values. ORDER MATTERS:
+    only your final message is delivered, so make it the complete report with no working notes before it.'

@@ -1,0 +1,20 @@
+AI Employees
+Copyright (c) 2026 Samiul Huda. Licensed under the MIT License (see LICENSE).
+
+This repository contains agent profiles, scripts and a dashboard for Hermes Agent
+(https://github.com/NousResearch/hermes-agent) by Nous Research. Hermes Agent itself is
+not included; install it separately under its own license.
+
+Included third-party files:
+
+- TalkingHead (hq/web/public/talkinghead/), Copyright (c) 2024 Mika Suominen, MIT License.
+  https://github.com/met4citizen/TalkingHead
+- three.js (hq/web/public/vendor/three/), Copyright (c) 2010-2025 three.js authors, MIT License.
+  https://threejs.org
+
+Used as dependencies (not included; installed by npm or pip under their own licenses):
+React, react-three-fiber, drei, postprocessing, Tailwind CSS, Vite, FastAPI, Uvicorn,
+Pydantic, openpyxl, PyYAML, and optionally edge-tts, kokoro-onnx and soundfile.
+
+Fernway, its customers, prospects and all data in hq/demo are fictional. Any resemblance to
+real businesses is coincidental.

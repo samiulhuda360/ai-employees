@@ -1,0 +1,87 @@
+# Study lists: what each agent needs to learn, and where YouTube Watcher looks for it.
+#
+# YouTube Watcher is the fleet's teacher. Every evening it watches videos and reads
+# forum threads and blog posts picked from these lists, and tags each thing it learns
+# with the agents it is for. Hermes HQ then hands every agent its own learnings at the
+# start of its next run. Edit this file to change what an agent studies.
+#
+# need:      one or two sentences; the teacher reads this to judge relevance
+# keywords:  rank web items (any hit counts; more hits rank higher)
+# feeds:     RSS/Atom feeds (blogs, forums, news searches)
+# subreddits / hn: Reddit communities and Hacker News searches
+
+version: 1
+max_leads_per_agent: 4
+lookback_days: 7
+
+agents:
+  blog-planner:
+    need: What ranks now for local-SEO and agency topics, how Google treats helpful content and AI-written
+      pages, and which article formats win weak search results.
+    keywords: [ranking, serp, helpful content, ai overview, search console, topical, internal link, content brief,
+               local seo, google business profile, featured snippet, e-e-a-t, indexing]
+    feeds:
+      - https://www.seroundtable.com/index.xml
+      - https://feeds.feedburner.com/blogspot/amDG
+    subreddits: [SEO, bigseo, content_marketing]
+
+  social-planner:
+    need: Which post formats and hooks earn reach for B2B and local-service audiences on Facebook, LinkedIn
+      and X, and what the platforms changed.
+    keywords: [linkedin, facebook, carousel, hook, engagement, reach, algorithm, post format, thread, organic]
+    feeds:
+      - https://news.google.com/rss/search?q=linkedin+algorithm+update+OR+facebook+page+reach+when:14d
+    subreddits: [socialmedia, linkedin, marketing]
+
+  growth-scout:
+    need: What local-SEO agencies and small businesses struggle with and pay for; what competitors (BrightLocal,
+      Local Falcon, Whitespark) ship; Google Business Profile changes that open or close a product angle.
+    keywords: [google business profile, gbp, map pack, geo grid, citation, review, suspension, verification,
+               agency, white label, rank tracking, brightlocal, local falcon, whitespark, pricing]
+    feeds:
+      - https://www.localsearchforum.com/forums/-/index.rss
+      - https://www.sterlingsky.ca/feed/
+      - https://whitespark.ca/feed/
+    subreddits: [localseo, GoogleMyBusiness, agency]
+
+  opportunity-scout:
+    need: Small tools one developer shipped in days that earn money, how they found first buyers, and what
+      people say they would pay for (Cash Builds).
+    keywords: [first paying, mrr, revenue, lifetime deal, chrome extension, wordpress plugin, launched, would pay,
+               side project, micro saas, pricing, gumroad]
+    hn: ['"first paying customer"', '"side project" revenue', 'Show HN chrome extension']
+    subreddits: [microsaas, SideProject, indiehackers]
+
+  prospect-finder:
+    need: Which Google Business Profile weaknesses actually predict that a local business will buy help, and
+      what makes a first outreach message get a reply.
+    keywords: [cold email, outreach, reply rate, prospecting, lead, unclaimed, google business profile, local business,
+               agency clients, first client]
+    subreddits: [agency, localseo, coldemail]
+
+  client-wins:
+    need: How small SaaS products keep customers - onboarding, churn warning signs, win-back messages and
+      asking for testimonials.
+    keywords: [churn, retention, onboarding, win-back, testimonial, activation, customer success, renewal, upsell]
+    hn: ['churn small saas', 'customer onboarding saas']
+    subreddits: [SaaS, CustomerSuccess]
+
+  code-health:
+    need: New serious vulnerabilities and supply-chain attacks in npm, PyPI and Composer packages, and safe
+      upgrade practice for Next.js, Node, PHP and Python projects.
+    keywords: [vulnerability, cve, supply chain, npm, pypi, composer, malicious package, next.js, security advisory,
+               dependency, patch]
+    feeds:
+      - https://github.blog/security/feed/
+      - https://news.google.com/rss/search?q=npm+OR+pypi+malicious+package+OR+supply+chain+attack+when:7d
+    hn: ['npm supply chain', 'malicious package pypi']
+
+  chief-assistant:
+    need: Better ways to run a fleet of AI agents - Hermes Agent releases, new connectors (MCP servers), cheaper
+      or more reliable model routing, evaluation and guardrails.
+    keywords: [hermes agent, nous research, mcp server, connector, agent evaluation, guardrail, model routing,
+               fallback, prompt caching, cron, orchestration]
+    skip: [canary]
+    feeds:
+      - https://github.com/NousResearch/hermes-agent/releases.atom
+    hn: ['MCP server', 'agent evaluation harness']
