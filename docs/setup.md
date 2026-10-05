@@ -8,6 +8,8 @@ See [Run the demo](../README.md#run-the-demo). In short:
 pip install -r hq/server/requirements.txt
 python hq/demo/seed.py
 cd hq/server && HQ_DEMO=1 HQ_HOME=../demo/home uvicorn hq_api:app --port 8787
+
+# in a second terminal, from the repository root
 cd hq/web && npm ci && npm run dev
 ```
 
@@ -41,7 +43,14 @@ You need [Hermes Agent](https://github.com/NousResearch/hermes-agent) installed 
    - Run `hq_api:app` with uvicorn on 127.0.0.1:8787, as a user systemd service named `hq-api`.
    - Run `hq_ingest.py` from cron every 10 minutes.
    - Build `hq/web` and serve `dist/` with nginx, proxying `/api/` to the API. Use HTTPS, because the session cookie is `Secure`.
-   - Put `HQ_PASSWORD_HASH=pbkdf2$<iterations>$<salt hex>$<hash hex>` in `~/hq/.env`.
+   - Put `HQ_PASSWORD_HASH=pbkdf2$<iterations>$<salt hex>$<hash hex>` in `~/hq/.env`. This Python snippet asks for the password and prints the line:
+
+     ```python
+     import getpass, hashlib, secrets
+     salt, n = secrets.token_bytes(16), 600_000
+     digest = hashlib.pbkdf2_hmac("sha256", getpass.getpass().encode(), salt, n).hex()
+     print(f"HQ_PASSWORD_HASH=pbkdf2${n}${salt.hex()}${digest}")
+     ```
 5. **PC agents (optional).** Install Hermes on the PC for YouTube Watcher and Code Health. Schedule `sync_to_server.py` and the two scripts in [ops/pc](../ops/pc) with Task Scheduler. `run_hidden.vbs` runs them without a console window.
 
 `<project>` in instructions and prompts means the folder where you keep the PC agents.
