@@ -1,10 +1,62 @@
 # AI Employees
 
-Nine AI agents ("employees") that do the research, marketing, sales and operations work of a small software business on a schedule, and **Hermes HQ**, the dashboard where the founder reviews and steers them. Every report reaches the founder's phone through Telegram. HQ turns the reports into one ranked to-do list, shows the fleet on a 3D command deck, and has Claudia, a chief assistant you can talk to. It is built for a solo founder: the agents research and recommend, and the founder decides.
+**A team of nine AI assistants that do the background research, marketing and sales homework for a one-person
+software business, and a dashboard where the owner decides what to act on.**
 
 ![Hermes HQ command deck: fleet health, the ranked Do first list, every agent at its station and the last 24 hours of runs](docs/screenshots/deck.png)
 
-*The command deck (demo data): fleet health, the ranked "Do first" list, each agent at its station and the last 24 hours of runs.*
+*The control room (demo data). Top left: whether every assistant ran on time. Left: the "Do first" list, the most
+useful suggestions ranked by score. Centre: each assistant at its own desk. Bottom: what they did in the last 24
+hours.*
+
+## What it does
+
+Running a small business alone means there is never time to watch competitors, find new customers, plan blog
+posts and check the website code. These AI "employees" do that homework on a timetable, every day or every week,
+and send short reports to the owner's phone. A dashboard gathers all their suggestions into one ranked to-do
+list. The assistants only research and recommend; the owner makes every decision.
+
+## A real-life example
+
+![Slideshow: Jordan opens the control room, reads the ranked to-do list, sees which assistant suggested what, approves a blog idea, checks new sales leads and sees how customers are doing](docs/screenshots/story.gif)
+
+*Jordan's morning with the AI employees, in five steps.*
+
+Jordan runs Fernway, a small app that helps local businesses get found online, on their own. (Fernway is the
+fictional company in this public copy; every customer, prospect and number in the demo is invented.)
+
+- **Before:** Jordan is the developer, the marketer and the salesperson. Researching blog topics, scrolling social
+  media for post ideas, hunting for local businesses to contact and checking which customers might cancel all
+  fall to the bottom of the list, so they happen late or not at all.
+- **With AI Employees:** nine assistants work through 29 scheduled jobs. One finds blog topics the site can
+  realistically rank for, and a second job fact-checks them 30 minutes later. Another finds local businesses with
+  gaps in their Google listing that Fernway could fix. Another checks which customers are doing well and which
+  are at risk. Each sends a short report to Jordan's phone, and a guardian only messages when something has
+  gone wrong.
+- **After:** instead of nine separate reports, Jordan opens one dashboard with a single to-do list, every item
+  scored from 0 to 100 with a plain reason. He approves, parks or rejects each idea with one click, and every
+  Sunday the assistants propose small improvements to their own instructions based on those choices, which
+  take effect only if he approves them.
+
+## How you would use it
+
+1. Read the reports that arrive on your phone through Telegram (a messaging app) during the day.
+2. Open the dashboard in your browser and sign in with your password and the 6-digit code sent to your phone.
+3. Look at the **Do first** list on the main screen: the most useful suggestions, each with a score and a reason.
+4. Open the assistant that made a suggestion to read its full report, then press **Approve**, **Done** or **Park**.
+5. Open **Prospects** to see suggested businesses to contact, or **Customers** to see who is doing well and who
+   might need help.
+6. Or just ask Claudia, the chief assistant, out loud: "What should I do first?" She answers by voice and asks
+   before she changes anything.
+7. If anything ever looks wrong, the **Emergency stop** button pauses the whole team at once.
+
+## In technical terms
+
+Nine AI agents (AI programs that can use tools and act on a schedule, not just chat) that do the research,
+marketing, sales and operations work of a small software business, and **Hermes HQ**, the dashboard where the
+founder reviews and steers them. Every report reaches the founder's phone through Telegram. HQ turns the reports
+into one ranked to-do list, shows the fleet on a 3D command deck, and has Claudia, a chief assistant you can talk
+to. It is built for a solo founder: the agents research and recommend, and the founder decides.
 
 I built this fleet for my own company, where it runs every day. In this public copy the company is **Fernway**, a fictional local-marketing app, and every customer, prospect and number in the demo is invented. The agents, scripts, prompts, parsers and dashboard are the real ones.
 
